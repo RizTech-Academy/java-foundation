@@ -1,0 +1,8 @@
+target/
+dependency-reduced-pom.xml
+demo-data.csv
+deliveries.csv
+*.class
+.idea/
+*.iml
+.DS_Store
