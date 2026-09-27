@@ -15,8 +15,11 @@ public record Subscriber(String name, String pincode, Plan plan, LocalDate start
         if (name.isBlank()) {
             throw new IllegalArgumentException("name must not be blank");
         }
-        if (!pincode.matches("\\d{6}")) {
-            throw new IllegalArgumentException("pincode must be six digits, got [" + pincode + "]");
+        // Six digits and never a leading zero: no Indian pincode starts with 0.
+        // "\\d{6}" looks right and quietly accepts 012345.
+        if (!pincode.matches("[1-9]\\d{5}")) {
+            throw new IllegalArgumentException(
+                    "pincode must be six digits not starting with zero, got [" + pincode + "]");
         }
     }
 

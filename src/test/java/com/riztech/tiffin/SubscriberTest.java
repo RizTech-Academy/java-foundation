@@ -26,7 +26,22 @@ class SubscriberTest {
     void rejectsAShortPincodeAndQuotesIt() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
                 () -> new Subscriber("Priya", "41120", Plan.VEG, START));
-        assertEquals("pincode must be six digits, got [41120]", e.getMessage());
+        assertEquals("pincode must be six digits not starting with zero, got [41120]", e.getMessage());
+    }
+
+    @Test
+    void rejectsAPincodeStartingWithZero() {
+        // The regex was "\\d{6}" first, which is six digits and therefore
+        // accepts 012345. No Indian pincode starts with zero, and nothing in
+        // the suite noticed until this test existed.
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> new Subscriber("Priya", "012345", Plan.VEG, START));
+        assertEquals("pincode must be six digits not starting with zero, got [012345]", e.getMessage());
+    }
+
+    @Test
+    void acceptsARealPincode() {
+        assertEquals("411207", new Subscriber("Priya", "411207", Plan.VEG, START).pincode());
     }
 
     @Test
